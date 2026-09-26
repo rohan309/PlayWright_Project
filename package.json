@@ -3,7 +3,11 @@
         "test": "playwright test",
         "test:headed": "playwright test --headed",
         "test:chrome": "playwright test --project=chromium",
-        "report": "playwright show-report"
+        "report": "playwright show-report",
+        "allure:clean": "powershell -Command \"Remove-Item -Recurse -Force allure-results -ErrorAction SilentlyContinue\"",
+        "allure:generate": "allure generate allure-results --clean -o allure-report",
+        "allure:open": "allure open allure-report",
+        "allure:serve": "allure serve allure-results"
     },
     "devDependencies": {
         "@playwright/test": "^1.55.0",

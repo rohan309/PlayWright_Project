@@ -4,12 +4,18 @@ import { LoginPage } from '../pages/LoginPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import loginData from '../test-data/loginData.json';
 
-test("Verify valid login)", async ({ page }) => {
+let loginPage!: LoginPage;
+let dashboardPage!: DashboardPage;
 
-  const loginPage = new LoginPage(page);
-  const dashboardPage = new DashboardPage(page);
+test.beforeEach(async ({ page }) => {
+
+  loginPage = new LoginPage(page);
+  dashboardPage = new DashboardPage(page);
 
   await loginPage.navigate();
+});
+
+test("Verify valid login", async ({ page }) => {
 
   await loginPage.login(
     loginData.validUser.username,
@@ -17,4 +23,15 @@ test("Verify valid login)", async ({ page }) => {
   );
 
   await expect(dashboardPage.dashboardHeading).toBeVisible();
+
+});
+
+test("Verify invalid login", async ({ page }) => {
+
+  await loginPage.login(
+    loginData.invalidUser.username,
+    loginData.invalidUser.password
+  );
+
+  await expect(loginPage.username).toBeVisible();
 });
