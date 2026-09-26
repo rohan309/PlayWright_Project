@@ -1,0 +1,18 @@
+{
+    "scripts": {
+        "test": "playwright test",
+        "test:headed": "playwright test --headed",
+        "test:chrome": "playwright test --project=chromium",
+        "report": "playwright show-report"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.55.0",
+        "@types/node": "^24.19.0",
+        "allure-commandline": "^2.46.1",
+        "allure-playwright": "^3.12.2",
+        "typescript": "^5.9.0"
+    },
+    "dependencies": {
+        "dotenv": "^18.0.4"
+    }
+}
