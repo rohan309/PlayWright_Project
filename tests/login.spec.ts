@@ -35,3 +35,56 @@ test("Verify invalid login", async ({ page }) => {
 
   await expect(loginPage.username).toBeVisible();
 });
+
+const loginInvalidData: string[][] = [
+  // Username       Password       Scenario              Expected Output
+  ["WrongAdmin", "admin123", "Invalid username", "Invalid credentials"],
+  ["Admin", "wrong123", "Invalid password", "Invalid credentials"],
+  ["WrongAdmin", "wrong123", "Both invalid", "Invalid credentials"],
+  ["", "admin123", "Empty username", "Required"],
+  ["Admin", "", "Empty password", "Required"],
+  ["", "", "Both fields empty", "Required"]
+];
+
+for (const [username, password, scenario, expectedOutput] of loginInvalidData) {
+
+  test(`Verify ${scenario}`, async ({ page }) => {
+
+    await loginPage.login(username, password);
+
+    if (expectedOutput === "Dashboard") {
+
+      await expect(
+        dashboardPage.dashboardHeading
+      ).toBeVisible();
+
+    } else if (expectedOutput === "Invalid credentials") {
+
+      await expect(
+        loginPage.invalidCredentialsMessage
+      ).toHaveText("Invalid credentials");
+
+    } else if (scenario === "Empty username") {
+
+      await expect(
+        loginPage.usernameRequired
+      ).toHaveText("Required");
+
+    } else if (scenario === "Empty password") {
+
+      await expect(
+        loginPage.passwordRequired
+      ).toHaveText("Required");
+
+    } else if (scenario === "Both fields empty") {
+
+      await expect(
+        loginPage.usernameRequired
+      ).toHaveText("Required");
+
+      await expect(
+        loginPage.passwordRequired
+      ).toHaveText("Required");
+    }
+  })
+};
